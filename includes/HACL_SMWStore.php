@@ -386,17 +386,7 @@ class HACLSMWStore extends SMWStore {
 	 * @return array
 	 */
 	public function getPropertiesSpecial( $requestoptions = null ) {
-		$propUsage = $this->mWrappedStore->getPropertiesSpecial($requestoptions);
-    	foreach ($propUsage as $k => $propAndCount) {
-    		$prop = $propAndCount[0];
-			if (!$this->isPropertyAccessible($prop)) {
-				// The property is protected
-				unset($propUsage[$k]);
-			}
-    	}
-		
-		$propUsage = array_merge($propUsage);
-    	return $propUsage;
+		return $this->mWrappedStore->getPropertiesSpecial( $requestoptions );
 	}
 
 	/**

@@ -54,22 +54,6 @@ diff -u -r -N SemanticMediaWiki_orig/includes/storage/SMW_QueryResult.php Semant
  	/**
  	 * Get the SMWStore object that this result is based on.
  	 *
-diff -u -r -N SemanticMediaWiki_orig/includes/storage/SMW_ResultArray.php SemanticMediaWiki_new/includes/storage/SMW_ResultArray.php
---- SemanticMediaWiki_orig/includes/storage/SMW_ResultArray.php
-+++ SemanticMediaWiki_new/includes/storage/SMW_ResultArray.php
-@@ -46,7 +46,11 @@
- 	public function __construct( SMWDIWikiPage $resultPage, SMWPrintRequest $printRequest, SMWStore $store ) {
- 		$this->mResult = $resultPage;
- 		$this->mPrintRequest = $printRequest;
--		$this->mStore = $store;
-+/*op-patch|TS|2014-09-30|HaloACL|Semantic protection|start*/
-+		//		$this->mStore = $store;
-+		$this->mStore = smwfGetStore();
-+/*op-patch|TS|2014-09-30|end*/
-+		
- 		$this->mContent = false;
- 	}
- 
 diff -u -r -N SemanticMediaWiki_orig/includes/storage/SQLStore/SMW_SQLStore3_Queries.php SemanticMediaWiki_new/includes/storage/SQLStore/SMW_SQLStore3_Queries.php
 --- SemanticMediaWiki_orig/includes/storage/SQLStore/SMW_SQLStore3_Queries.php
 +++ SemanticMediaWiki_new/includes/storage/SQLStore/SMW_SQLStore3_Queries.php
