@@ -8,7 +8,7 @@
 +		/*op-patch|TS|2009-11-05|HaloACL|Protected properties|start*/
 +		// See http://dmwiki.ontoprise.com:8888/dmwiki/index.php/Protected_properties
 +		global $haclgProtectProperties;
-+		$s2 = '':
++		$s2 = '';
 +		if (!$haclgProtectProperties) {
 +			// The comment for an article might reveal values of protected properties
 +			$s2 = Linker::revComment( $rev, false, true );
