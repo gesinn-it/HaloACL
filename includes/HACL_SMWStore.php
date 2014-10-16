@@ -16,8 +16,6 @@
  * with this program.If not, see <http://www.gnu.org/licenses/>.
  *
 */
-global $IP;
-require_once "$IP/extensions/SemanticMediaWiki/includes/storage/SQLStore/PropertiesCollector.php";
 
 /**
  * @file

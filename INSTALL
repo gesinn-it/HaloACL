@@ -25,12 +25,13 @@ Installation:
 (6) Choose the command depending on your MediaWiki installation to patch MediaWiki:
 			
 			cp extensions/HaloACL/<patchfile_for_MW> .
-			patch < <patchfile_for_MW>
+			cd includes
+			patch -p1 < ../<patchfile_for_MW>
 
 (7) If you are running SemanticMediaWiki, go to you SemanticMediaWikis directory
 			
-			cp ../HaloACL/patch_for_SMW2.0 .
-			patch < patch_for_SMW2.0
+			cp ../HaloACL/<patchfile_for_SMW> ../.
+			patch -p1 < ../<patchfile_for_SMW>
 
 Updating the database
 ---------------------
