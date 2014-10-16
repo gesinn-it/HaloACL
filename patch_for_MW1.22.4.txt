@@ -1,5 +1,5 @@
---- includes/actions/HistoryAction.php	2014-10-16 18:37:01.140090931 +0200
-+++ includes_new/actions/HistoryAction.php	2014-10-16 18:36:27.743925324 +0200
+--- includes/actions/HistoryAction.php	2014-10-16 19:21:51.485431647 +0200
++++ includes_new/actions/HistoryAction.php	2014-10-16 19:21:25.489302729 +0200
 @@ -614,7 +614,15 @@
  		}
  
@@ -17,8 +17,8 @@
  
  		if ( $notificationtimestamp && ( $row->rev_timestamp >= $notificationtimestamp ) ) {
  			$s2 .= ' <span class="updatedmarker">' . $this->msg( 'updatedmarker' )->escaped() . '</span>';
---- includes/CategoryViewer.php	2014-10-16 18:37:01.088090700 +0200
-+++ includes_new/CategoryViewer.php	2014-10-16 18:36:27.703925149 +0200
+--- includes/CategoryViewer.php	2014-10-16 19:21:51.433431367 +0200
++++ includes_new/CategoryViewer.php	2014-10-16 19:21:25.453302543 +0200
 @@ -187,6 +187,12 @@
  	 */
  	function addSubcategory( Title $title, $sortkey, $pageLength ) {
@@ -45,57 +45,85 @@
  		$link = Linker::link( $title );
  		if ( $isRedirect ) {
  			// This seems kind of pointless given 'mw-redirect' class,
---- includes/diff/DairikiDiff.php	2014-10-16 18:36:59.416082385 +0200
-+++ includes_new/diff/DairikiDiff.php	2014-10-16 18:36:26.507919186 +0200
-@@ -758,6 +758,19 @@
+--- includes/diff/DairikiDiff.php	2014-10-16 19:21:49.785423203 +0200
++++ includes_new/diff/DairikiDiff.php	2014-10-16 19:21:24.353297091 +0200
+@@ -758,6 +758,7 @@
  		return $lines;
  	}
  
-+	// Remove property values before output if properties are protected
-+	function removePropertyValues ( $line ) {
-+		global $haclgProtectProperties;
-+		if (!$haclgProtectProperties || !defined('SMW_VERSION') || !strpos($line, "::") ) {
-+			// Properties are not protected or no properties in line - everything can be processed
-+			return $line;
-+		} else { // properties in text
-+			$regexpattern = '/::[^\]]*/';
-+			$regexreplace = '::Property value removed by HaloACL';
-+			$res2 = preg_replace($regexpattern, $regexreplace, $line);
-+			return $res2;
-+		} 	
-+	}
++
  	/**
  	 * Check a Diff for validity.
  	 *
-@@ -1392,7 +1405,7 @@
+@@ -1385,6 +1386,7 @@
+ 
+ 	function _lines( $lines, $prefix = ' ', $color = 'white' ) {
+ 	}
++	// Remove property values before output if properties are protected
+ 
+ 	/**
+ 	 * HTML-escape parameter before calling this
+@@ -1392,7 +1394,21 @@
  	 * @return string
  	 */
  	function addedLine( $line ) {
 -		return $this->wrapLine( '+', 'diff-addedline', $line );
-+		return $this->wrapLine( '+', 'diff-addedline', removePropertyValues( $line ) );
++		global $haclgProtectProperties;
++		if (!$haclgProtectProperties || !defined('SMW_VERSION') || !strpos($line, "::") ) {
++			$file3 = "/home/woj/code/m23.4/3.txt";
++			$fh3 = fopen($file3, 'w');
++			$content3 = $line;
++			fwrite($fh3, $content3);
++			fclose($fh3);				
++			// Properties are not protected or no properties in line - everything can be processed
++			return $this->wrapLine( '+++', 'diff-addedline', $line );
++		} else { // properties in text
++			$regexpattern = '/::[^\]]*/';
++			$regexreplace = '::Property value removed by HaloACL';
++			$line2 = preg_replace($regexpattern, $regexreplace, $line);
++			return $this->wrapLine( '+', 'diff-addedline', $line2 );
++		} 	
  	}
  
  	/**
-@@ -1401,7 +1414,7 @@
+@@ -1401,7 +1417,16 @@
  	 * @return string
  	 */
  	function deletedLine( $line ) {
 -		return $this->wrapLine( '−', 'diff-deletedline', $line );
-+		return $this->wrapLine( '−', 'diff-deletedline', removePropertyValues( $line ) );
++		global $haclgProtectProperties;
++		if (!$haclgProtectProperties || !defined('SMW_VERSION') || !strpos($line, "::") ) {
++			// Properties are not protected or no properties in line - everything can be processed
++			return $this->wrapLine( '-', 'diff-addedline', $line );
++		} else { // properties in text
++			$regexpattern = '/::[^\]]*/';
++			$regexreplace = '::Property value removed by HaloACL';
++			$line2 = preg_replace($regexpattern, $regexreplace, $line);
++			return $this->wrapLine( '-', 'diff-addedline', $line2 );
++		} 		
  	}
  
  	/**
-@@ -1410,7 +1423,7 @@
+@@ -1410,7 +1435,16 @@
  	 * @return string
  	 */
  	function contextLine( $line ) {
 -		return $this->wrapLine( '&#160;', 'diff-context', $line );
-+		return $this->wrapLine( '&#160;', 'diff-context', removePropertyValues( $line ) );
++		global $haclgProtectProperties;
++		if (!$haclgProtectProperties || !defined('SMW_VERSION') || !strpos($line, "::") ) {
++			// Properties are not protected or no properties in line - everything can be processed
++			return $this->wrapLine( '&#160', 'diff-addedline', $line );
++		} else { // properties in text
++			$regexpattern = '/::[^\]]*/';
++			$regexreplace = '::Property value removed by HaloACL';
++			$line2 = preg_replace($regexpattern, $regexreplace, $line);
++			return $this->wrapLine( '&#160', 'diff-addedline', $line2 );
++		} 			
  	}
  
  	/**
---- includes/Linker.php	2014-10-16 18:37:00.168086112 +0200
-+++ includes_new/Linker.php	2014-10-16 18:36:26.927921276 +0200
+--- includes/Linker.php	2014-10-16 19:21:50.557427038 +0200
++++ includes_new/Linker.php	2014-10-16 19:21:24.641298519 +0200
 @@ -1588,7 +1588,14 @@
  		} else {
  			$formatted = self::formatComment( $comment, $title, $local );
@@ -112,8 +140,8 @@
  		}
  	}
  
---- includes/QueryPage.php	2014-10-16 18:37:01.392092185 +0200
-+++ includes_new/QueryPage.php	2014-10-16 18:36:27.963926414 +0200
+--- includes/QueryPage.php	2014-10-16 19:21:51.741432907 +0200
++++ includes_new/QueryPage.php	2014-10-16 19:21:25.709303812 +0200
 @@ -588,6 +588,21 @@
  			# $res might contain the whole 1,000 rows, so we read up to
  			# $num [should update this to use a Pager]
@@ -136,8 +164,8 @@
  				$line = $this->formatResult( $skin, $row );
  				if ( $line ) {
  					$attr = ( isset( $row->usepatrol ) && $row->usepatrol && $row->patrolled == 0 )
---- includes/specials/SpecialAllpages.php	2014-10-16 18:37:02.180096088 +0200
-+++ includes_new/specials/SpecialAllpages.php	2014-10-16 18:36:29.263932861 +0200
+--- includes/specials/SpecialAllpages.php	2014-10-16 19:21:52.505436684 +0200
++++ includes_new/specials/SpecialAllpages.php	2014-10-16 19:21:26.953309964 +0200
 @@ -393,6 +393,12 @@
  				$out = Xml::openElement( 'table', array( 'class' => 'mw-allpages-table-chunk' ) );
  				while ( ( $n < $this->maxPerPage ) && ( $s = $res->fetchObject() ) ) {
@@ -151,8 +179,8 @@
  					if ( $t ) {
  						$link = ( $s->page_is_redirect ? '<div class="allpagesredirect">' : '' ) .
  							Linker::link( $t ) .
---- includes/specials/SpecialCategories.php	2014-10-16 18:37:02.076095550 +0200
-+++ includes_new/specials/SpecialCategories.php	2014-10-16 18:36:29.171932431 +0200
+--- includes/specials/SpecialCategories.php	2014-10-16 19:21:52.401436154 +0200
++++ includes_new/specials/SpecialCategories.php	2014-10-16 19:21:26.837309403 +0200
 @@ -121,6 +121,12 @@
  
  	function formatRow( $result ) {
@@ -166,8 +194,8 @@
  		$titleText = Linker::link( $title, htmlspecialchars( $title->getText() ) );
  		$count = $this->msg( 'nmembers' )->numParams( $result->cat_pages )->escaped();
  
---- includes/specials/SpecialContributions.php	2014-10-16 18:37:02.332096836 +0200
-+++ includes_new/specials/SpecialContributions.php	2014-10-16 18:36:29.451933777 +0200
+--- includes/specials/SpecialContributions.php	2014-10-16 19:21:52.653437430 +0200
++++ includes_new/specials/SpecialContributions.php	2014-10-16 19:21:27.109310733 +0200
 @@ -904,6 +904,9 @@
  			$classes = array();
  
@@ -178,8 +206,8 @@
  			$link = Linker::link(
  				$page,
  				htmlspecialchars( $page->getPrefixedText() ),
---- includes/specials/SpecialDeletedContributions.php	2014-10-16 18:37:02.180096088 +0200
-+++ includes_new/specials/SpecialDeletedContributions.php	2014-10-16 18:36:29.247932779 +0200
+--- includes/specials/SpecialDeletedContributions.php	2014-10-16 19:21:52.505436684 +0200
++++ includes_new/specials/SpecialDeletedContributions.php	2014-10-16 19:21:26.941309923 +0200
 @@ -154,6 +154,9 @@
  		wfProfileIn( __METHOD__ );
  
@@ -190,8 +218,8 @@
  
  		$rev = new Revision( array(
  			'title' => $page,
---- includes/specials/SpecialExport.php	2014-10-16 18:37:02.292096633 +0200
-+++ includes_new/specials/SpecialExport.php	2014-10-16 18:36:29.399933541 +0200
+--- includes/specials/SpecialExport.php	2014-10-16 19:21:52.617437252 +0200
++++ includes_new/specials/SpecialExport.php	2014-10-16 19:21:27.065310555 +0200
 @@ -422,8 +422,15 @@
  				$ns = $wgContLang->getNsText( $row->page_namespace );
  				$n = $ns . ':' . $n;
@@ -210,8 +238,8 @@
  		}
  
  		return $pages;
---- includes/specials/SpecialListfiles.php	2014-10-16 18:37:02.032095355 +0200
-+++ includes_new/specials/SpecialListfiles.php	2014-10-16 18:36:29.131932213 +0200
+--- includes/specials/SpecialListfiles.php	2014-10-16 19:21:52.357435954 +0200
++++ includes_new/specials/SpecialListfiles.php	2014-10-16 19:21:26.825309335 +0200
 @@ -386,6 +386,31 @@
  		UserCache::singleton()->doQuery( $userIds, array( 'userpage' ), __METHOD__ );
  	}
@@ -244,8 +272,8 @@
  	function formatValue( $field, $value ) {
  		switch ( $field ) {
  			case 'thumb':
---- includes/specials/SpecialListredirects.php	2014-10-16 18:37:02.020095292 +0200
-+++ includes_new/specials/SpecialListredirects.php	2014-10-16 18:36:29.083931986 +0200
+--- includes/specials/SpecialListredirects.php	2014-10-16 19:21:52.341435867 +0200
++++ includes_new/specials/SpecialListredirects.php	2014-10-16 19:21:26.785309154 +0200
 @@ -123,6 +123,12 @@
  
  		# Find out where the redirect leads
@@ -259,8 +287,8 @@
  		if ( $target ) {
  			# Make a link to the destination page
  			$lang = $this->getLanguage();
---- includes/specials/SpecialNewimages.php	2014-10-16 18:37:02.080095578 +0200
-+++ includes_new/specials/SpecialNewimages.php	2014-10-16 18:36:29.179932442 +0200
+--- includes/specials/SpecialNewimages.php	2014-10-16 19:21:52.405436174 +0200
++++ includes_new/specials/SpecialNewimages.php	2014-10-16 19:21:26.837309403 +0200
 @@ -140,6 +140,9 @@
  		$user = User::newFromId( $row->img_user );
  
@@ -271,8 +299,8 @@
  		$ul = Linker::link( $user->getUserpage(), $user->getName() );
  		$time = $this->getLanguage()->userTimeAndDate( $row->img_timestamp, $this->getUser() );
  
---- includes/specials/SpecialNewpages.php	2014-10-16 18:37:02.236096361 +0200
-+++ includes_new/specials/SpecialNewpages.php	2014-10-16 18:36:29.347933258 +0200
+--- includes/specials/SpecialNewpages.php	2014-10-16 19:21:52.561436970 +0200
++++ includes_new/specials/SpecialNewpages.php	2014-10-16 19:21:27.029310361 +0200
 @@ -305,6 +305,12 @@
  	 */
  	public function formatRow( $result ) {
@@ -286,8 +314,8 @@
  
  		# Revision deletion works on revisions, so we should cast one
  		$row = array(
---- includes/specials/SpecialPrefixindex.php	2014-10-16 18:37:02.304096718 +0200
-+++ includes_new/specials/SpecialPrefixindex.php	2014-10-16 18:36:29.399933541 +0200
+--- includes/specials/SpecialPrefixindex.php	2014-10-16 19:21:52.625437280 +0200
++++ includes_new/specials/SpecialPrefixindex.php	2014-10-16 19:21:27.065310555 +0200
 @@ -208,6 +208,12 @@
  				$prefixLength = strlen( $prefix );
  				while ( ( $n < $this->maxPerPage ) && ( $s = $res->fetchObject() ) ) {
@@ -301,8 +329,8 @@
  					if ( $t ) {
  						$displayed = $t->getText();
  						// Try not to generate unclickable links
---- includes/specials/SpecialProtectedpages.php	2014-10-16 18:37:02.236096361 +0200
-+++ includes_new/specials/SpecialProtectedpages.php	2014-10-16 18:36:29.335933204 +0200
+--- includes/specials/SpecialProtectedpages.php	2014-10-16 19:21:52.561436970 +0200
++++ includes_new/specials/SpecialProtectedpages.php	2014-10-16 19:21:27.029310361 +0200
 @@ -101,6 +101,12 @@
  		}
  
@@ -316,8 +344,8 @@
  		if ( !$title ) {
  			wfProfileOut( __METHOD__ );
  
---- includes/specials/SpecialProtectedtitles.php	2014-10-16 18:37:01.836094380 +0200
-+++ includes_new/specials/SpecialProtectedtitles.php	2014-10-16 18:36:28.867930893 +0200
+--- includes/specials/SpecialProtectedtitles.php	2014-10-16 19:21:52.161434983 +0200
++++ includes_new/specials/SpecialProtectedtitles.php	2014-10-16 19:21:26.585308136 +0200
 @@ -99,6 +99,13 @@
  			) . "\n";
  		}
@@ -332,8 +360,8 @@
  		$link = Linker::link( $title );
  		$description_items = array();
  		// Messages: restriction-level-sysop, restriction-level-autoconfirmed
---- includes/specials/SpecialRandompage.php	2014-10-16 18:37:02.196096162 +0200
-+++ includes_new/specials/SpecialRandompage.php	2014-10-16 18:36:29.291933008 +0200
+--- includes/specials/SpecialRandompage.php	2014-10-16 19:21:52.517436746 +0200
++++ includes_new/specials/SpecialRandompage.php	2014-10-16 19:21:26.985310129 +0200
 @@ -61,6 +61,12 @@
  		}
  
@@ -347,8 +375,8 @@
  
  		if ( is_null( $title ) ) {
  			$this->setHeaders();
---- includes/specials/SpecialRecentchanges.php	2014-10-16 18:37:01.884094612 +0200
-+++ includes_new/specials/SpecialRecentchanges.php	2014-10-16 18:36:28.911931124 +0200
+--- includes/specials/SpecialRecentchanges.php	2014-10-16 19:21:52.209435212 +0200
++++ includes_new/specials/SpecialRecentchanges.php	2014-10-16 19:21:26.613308280 +0200
 @@ -464,6 +464,13 @@
  
  		$rclistOutput = $list->beginRecentChangesList();
@@ -363,8 +391,8 @@
  			if ( $limit == 0 ) {
  				break;
  			}
---- includes/specials/SpecialSearch.php	2014-10-16 18:37:01.940094891 +0200
-+++ includes_new/specials/SpecialSearch.php	2014-10-16 18:36:28.979931460 +0200
+--- includes/specials/SpecialSearch.php	2014-10-16 19:21:52.265435499 +0200
++++ includes_new/specials/SpecialSearch.php	2014-10-16 19:21:26.685308659 +0200
 @@ -540,7 +540,28 @@
  		$out .= "<ul class='mw-search-results'>\n";
  		$result = $matches->next();
@@ -395,8 +423,8 @@
  			$result = $matches->next();
  		}
  		$out .= "</ul>\n";
---- includes/specials/SpecialUndelete.php	2014-10-16 18:37:01.996095175 +0200
-+++ includes_new/specials/SpecialUndelete.php	2014-10-16 18:36:29.039931762 +0200
+--- includes/specials/SpecialUndelete.php	2014-10-16 19:21:52.317435758 +0200
++++ includes_new/specials/SpecialUndelete.php	2014-10-16 19:21:26.745308951 +0200
 @@ -1339,6 +1339,12 @@
  		$user = $this->getUser();
  		if ( $this->mCanView ) {
@@ -423,8 +451,8 @@
  		$ts = wfTimestamp( TS_MW, $row->fa_timestamp );
  		$user = $this->getUser();
  
---- includes/specials/SpecialWatchlist.php	2014-10-16 18:37:01.956094965 +0200
-+++ includes_new/specials/SpecialWatchlist.php	2014-10-16 18:36:28.979931460 +0200
+--- includes/specials/SpecialWatchlist.php	2014-10-16 19:21:52.281435580 +0200
++++ includes_new/specials/SpecialWatchlist.php	2014-10-16 19:21:26.685308659 +0200
 @@ -430,6 +430,12 @@
  		foreach ( $res as $obj ) {
  			# Make RC entry
@@ -438,8 +466,8 @@
  			$rc->counter = $counter++;
  
  			if ( $wgShowUpdatedMarker ) {
---- includes/specials/SpecialWhatlinkshere.php	2014-10-16 18:37:02.192096147 +0200
-+++ includes_new/specials/SpecialWhatlinkshere.php	2014-10-16 18:36:29.271932908 +0200
+--- includes/specials/SpecialWhatlinkshere.php	2014-10-16 19:21:52.513436732 +0200
++++ includes_new/specials/SpecialWhatlinkshere.php	2014-10-16 19:21:26.965310063 +0200
 @@ -261,6 +261,12 @@
  		$out->addHTML( $this->listStart( $level ) );
  		foreach ( $rows as $row ) {
@@ -453,8 +481,9 @@
  
  			if ( $row->rd_from && $level < 2 ) {
  				$out->addHTML( $this->listItem( $row, $nt, true ) );
---- includes/Title.php	2014-10-16 18:36:59.608083318 +0200
-+++ includes_new/Title.php	2014-10-16 18:36:26.603919666 +0200
+diff -u -r -N includes/Title.php includes_new/Title.php
+--- includes/Title.php	2014-10-16 19:21:49.997424257 +0200
++++ includes_new/Title.php	2014-10-16 19:21:24.461297618 +0200
 @@ -104,9 +104,15 @@
  	public static function newFromDBkey( $key ) {
  		$t = new Title();
