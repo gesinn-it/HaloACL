@@ -668,12 +668,7 @@ $result = true;
 	public static function onPropertyBeforeOutput(SMWDataValue &$propertyValue, &$text) {
 		wfProfileIn('HACLEvaluator::onPropertyBeforeOutput (HaloACL)');
 		global $wgUser;
-			$file3 = "/home/woj/code/mw22.10/3.txt";
-			$fh3 = fopen($file3, 'w');
-			$content3 = &$text;
-			fwrite($fh3, $content3);
-			fclose($fh3);			
-		
+
 		$protected = false;
 		$pt = $propertyValue->getProperty();
 		if (!is_null($pt)) {
