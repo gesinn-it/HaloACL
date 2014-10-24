@@ -28,18 +28,13 @@
  		}
 --- includes/diff/TableDiffFormatter.php
 +++ includes/diff/TableDiffFormatter.php
-@@ -94,7 +94,21 @@
+@@ -94,7 +94,16 @@
  	 * @return string
  	 */
  	protected function addedLine( $line ) {
 -		return $this->wrapLine( '+', 'diff-addedline', $line );
 +		global $haclgProtectProperties;
 +		if (!$haclgProtectProperties || !defined('SMW_VERSION') || !strpos($line, "::") ) {
-+			$file3 = "/home/woj/code/m23.4/3.txt";
-+			$fh3 = fopen($file3, 'w');
-+			$content3 = $line;
-+			fwrite($fh3, $content3);
-+			fclose($fh3);				
 +			// Properties are not protected or no properties in line - everything can be processed
 +			return $this->wrapLine( '+++', 'diff-addedline', $line );
 +		} else { // properties in text
@@ -51,7 +46,7 @@
  	}
  
  	/**
-@@ -105,7 +119,16 @@
+@@ -105,7 +114,16 @@
  	 * @return string
  	 */
  	protected function deletedLine( $line ) {
@@ -69,7 +64,7 @@
  	}
  
  	/**
-@@ -116,7 +139,16 @@
+@@ -116,7 +134,16 @@
  	 * @return string
  	 */
  	protected function contextLine( $line ) {
