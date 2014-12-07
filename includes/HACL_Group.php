@@ -1189,7 +1189,7 @@ GROUP
 	 * 		An array of group and user names. May be empty.
 	 */
 	public static function executeDMQuery($query) {
-		$smwStore = smwfGetStore();
+        $smwStore = \SMW\StoreFactory::getStore();;
 		if ($smwStore instanceof HACLSMWStore) {
 			// disable protection of query results to avoid recursion
 			$pa = $smwStore->setProtectionActive(false);

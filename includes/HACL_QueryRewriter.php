@@ -287,7 +287,7 @@ class  HACLQueryRewriter  {
 	 */
 	private function pruneSparqlQuery(SMWQuery &$query) {
 
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 //		if (!$store instanceof SMWTripleStore) {
 //			return;
 //		}

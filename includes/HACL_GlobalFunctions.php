@@ -717,7 +717,7 @@ function haclfInitSemanticStores() {
 
 		// Wrap the semantic store of SMW
 		global $smwgMasterStore;
-		$smwStore = smwfGetStore();
+		$smwStore = \SMW\StoreFactory::getStore();		
 		$wrapper = new HACLSMWStore($smwStore);
 		$smwgMasterStore = $wrapper;
 	} else {

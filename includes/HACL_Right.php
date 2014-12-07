@@ -680,7 +680,7 @@ class  HACLRight  {
 	 */
 	private function executeDAQuery($query) {
 		
-		$smwStore = smwfGetStore();
+		$smwStore = \SMW\StoreFactory::getStore();
 		if ($smwStore instanceof HACLSMWStore) {
 			// disable protection of query results to avoid recursion
 			$pa = $smwStore->setProtectionActive(false);

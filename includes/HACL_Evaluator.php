@@ -551,7 +551,7 @@ $result = true;
 										$wgUser->getId(),
 										HACLRight::FORMEDIT);
 				if (!$allowed) {
-					$store = smwfGetStore();
+					$store = \SMW\StoreFactory::getStore();
 					if ($store instanceof HACLSMWStore) {
 						$protectionActive = $store->setProtectionActive(false);
 					}
@@ -559,7 +559,7 @@ $result = true;
 					if (!isset($oldPV)) {
 						// Get all old properties of the page from the semantic store
 						$wp = SMWDIWikiPage::newFromTitle($editor->mTitle);
-						$oldPV = smwfGetStore()->getSemanticData($wp);
+						$oldPV = \SMW\StoreFactory::getStore()->getSemanticData($wp);
 					}
 				    if (self::propertyValuesChanged($prop, $oldPV, $output->mSMWData)) {
 						$protectedProperties .= "* $name\n";
@@ -1299,7 +1299,7 @@ $result = true;
 		}
 
 		// Get all properties of the page
-		$store = smwfGetStore(); 
+		$store = \SMW\StoreFactory::getStore(); 
 		if (!($store instanceof HACLSMWStore)) {
 			throw new HACLException(HACLException::INTERNAL_ERROR, 
 									"Expected an instance of HACLSMWStore as semantic store!");			
@@ -1307,7 +1307,7 @@ $result = true;
 		
 		// We need ALL properties of the title
 		$pa = $store->setProtectionActive(false);
-		$semdata = smwfGetStore()->getSemanticData(SMWDIWikiPage::newFromTitle($t));
+		$semdata = \SMW\StoreFactory::getStore()->getSemanticData(SMWDIWikiPage::newFromTitle($t));
 		$store->setProtectionActive($pa);
 		$props = $semdata->getProperties();
 
