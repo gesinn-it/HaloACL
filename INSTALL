@@ -28,9 +28,9 @@ Installation:
 			cd includes
 			patch -p1 < ../<patchfile_for_MW>
 
-(7) If you are running SemanticMediaWiki, go to you SemanticMediaWikis directory
+(7) If you are running SemanticMediaWiki, go to your SemanticMediaWikis_directory/includes
 			
-			cp ../HaloACL/<patchfile_for_SMW> ../.
+			cp ../../HaloACL/<patchfile_for_SMW> ../.
 			patch -p1 < ../<patchfile_for_SMW>
 
 Updating the database
