@@ -1,5 +1,5 @@
---- SemanticMediaWiki/includes/SMW_ParserExtensions.php	2014-10-16 18:45:32.306625670 +0200
-+++ SemanticMediaWiki/includes/SMW_ParserExtensions.php	2014-10-16 18:44:57.474452944 +0200
+--- includes/SMW_ParserExtensions.php	2014-10-16 18:45:32.306625670 +0200
++++ includes/SMW_ParserExtensions.php	2014-10-16 18:44:57.474452944 +0200
 @@ -168,6 +168,9 @@
  		}
  
@@ -10,8 +10,8 @@
  
  		if ( ( $smwgInlineErrors && $smwgStoreAnnotations && SMWParserExtensions::$mTempStoreAnnotations ) && ( !$dv->isValid() ) ) {
  			$result .= $dv->getErrorText();
---- SemanticMediaWiki/includes/storage/SMW_QueryResult.php	2014-10-16 18:45:32.294625611 +0200
-+++ SemanticMediaWiki/includes/storage/SMW_QueryResult.php	2014-10-16 18:44:57.442452786 +0200
+--- includes/storage/SMW_QueryResult.php	2014-10-16 18:45:32.294625611 +0200
++++ includes/storage/SMW_QueryResult.php	2014-10-16 18:44:57.442452786 +0200
 @@ -87,6 +87,39 @@
  		$this->mStore = $store;
  	}
@@ -52,8 +52,8 @@
  	/**
  	 * Get the SMWStore object that this result is based on.
  	 *
---- SemanticMediaWiki/includes/storage/SMW_ResultArray.php	2014-10-16 18:45:32.294625611 +0200
-+++ SemanticMediaWiki/includes/storage/SMW_ResultArray.php	2014-10-16 18:44:57.454452841 +0200
+--- includes/storage/SMW_ResultArray.php	2014-10-16 18:45:32.294625611 +0200
++++ includes/storage/SMW_ResultArray.php	2014-10-16 18:44:57.454452841 +0200
 @@ -56,7 +56,7 @@
  	 * @return SMWStore
  	 */
@@ -63,8 +63,8 @@
  	}
  
  	/**
---- SemanticMediaWiki/includes/storage/SQLStore/SMW_SQLStore3_Queries.php	2014-10-16 18:45:32.294625611 +0200
-+++ SemanticMediaWiki/includes/storage/SQLStore/SMW_SQLStore3_Queries.php	2014-10-16 18:44:57.410452618 +0200
+--- includes/storage/SQLStore/SMW_SQLStore3_Queries.php	2014-10-16 18:45:32.294625611 +0200
++++ includes/storage/SQLStore/SMW_SQLStore3_Queries.php	2014-10-16 18:44:57.410452618 +0200
 @@ -592,7 +592,25 @@
  						// No defaultnamespaces here; If any, these are already in the concept.
  						// Unescaping is the same as in SMW_DV_Conept's getWikiValue().
