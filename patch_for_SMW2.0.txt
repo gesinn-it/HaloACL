@@ -1,5 +1,5 @@
---- SemanticMediaWiki/includes/src/InTextAnnotationParser.php
-+++ SemanticMediaWiki/includes/src/InTextAnnotationParser.php
+--- includes/src/InTextAnnotationParser.php
++++ includes/src/InTextAnnotationParser.php
 @@ -291,7 +291,9 @@
  
  		// Return the text representation
@@ -11,8 +11,8 @@
  		// If necessary add an error text
  		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
  			$this->isEnabledNamespace && $this->isAnnotation ) &&
---- SemanticMediaWiki/includes/storage/SMW_QueryResult.php
-+++ SemanticMediaWiki/includes/storage/SMW_QueryResult.php
+--- includes/storage/SMW_QueryResult.php
++++ includes/storage/SMW_QueryResult.php
 @@ -80,6 +80,38 @@
  		$this->mStore = $store;
  	}
@@ -52,8 +52,8 @@
  	/**
  	 * Get the SMWStore object that this result is based on.
  	 *
---- SemanticMediaWiki/includes/storage/SQLStore/SMW_SQLStore3_Queries.php
-+++ SemanticMediaWiki/includes/storage/SQLStore/SMW_SQLStore3_Queries.php
+--- includes/storage/SQLStore/SMW_SQLStore3_Queries.php
++++ includes/storage/SQLStore/SMW_SQLStore3_Queries.php
 @@ -654,7 +654,25 @@
  						// No defaultnamespaces here; If any, these are already in the concept.
  						// Unescaping is the same as in SMW_DV_Conept's getWikiValue().
@@ -80,8 +80,8 @@
  						if ($qid != -1) {
  							$query = $this->m_queries[$qid];
  						} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
---- SemanticMediaWiki/includes/storage/StoreFactory.php
-+++ SemanticMediaWiki/includes/storage/StoreFactory.php
+--- includes/storage/StoreFactory.php
++++ includes/storage/StoreFactory.php
 @@ -38,11 +38,20 @@
  		if ( self::$defaultStore === null ) {
  			self::$defaultStore = self::getConfiguration()->get( 'smwgDefaultStore' );
