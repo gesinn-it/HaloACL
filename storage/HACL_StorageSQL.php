@@ -610,9 +610,14 @@ class HACLStorageSQL {
          			LEFT JOIN $gt ON $gt.group_id = gmt.parent_group_id
 					WHERE gmt.child_id = $memberID AND gmt.child_type = 'group'";
 		}
-		$res = $db->query($sql);
 
 		$curGroupArray = array();
+		try {
+			$res = $db->query($sql);
+		}
+		catch (Exception e) {
+			return $curGroupArray;
+		}
 
 		while ($row = $db->fetchObject($res)) {
 			if (isset($row->group_id) && isset($row->group_name)) {
