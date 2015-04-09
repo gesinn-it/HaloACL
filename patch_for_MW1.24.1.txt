@@ -134,13 +134,14 @@
  							( $s->page_is_redirect ? ' class="allpagesredirect"' : '' ) .
 --- includes/specials/SpecialCategories.php	2014-12-17 21:11:53.000000000 +0100
 +++ includes/specials/SpecialCategories.php	2015-03-22 15:16:45.073068001 +0100
-@@ -172,6 +172,12 @@
+@@ -172,6 +172,13 @@
  
  	function formatRow( $result ) {
  		$title = new TitleValue( NS_CATEGORY, $result->cat_title );
 +		/*op-patch|TS|2014-09-30|HaloACL|SafeTitle|start*/
 +		// See http://dmwiki.ontoprise.com:8888/dmwiki/index.php/SafeTitle
-+		if (!$title->userCanReadEx()) {
++		$title_nftv = Title::newFromTitleValue($title);
++		if (!$title_nftv->userCanReadEx()) {
 +			return "";
 +		}
 +		/*op-patch|TS|2014-09-30|end*/		
