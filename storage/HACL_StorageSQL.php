@@ -615,7 +615,7 @@ class HACLStorageSQL {
 		try {
 			$res = $db->query($sql);
 		}
-		catch (Exception e) {
+		catch (Exception $e) {
 			return $curGroupArray;
 		}
 
