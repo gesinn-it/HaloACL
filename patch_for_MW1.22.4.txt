@@ -176,13 +176,14 @@
  							Linker::link( $t ) .
 --- includes/specials/SpecialCategories.php	2014-10-16 19:21:52.401436154 +0200
 +++ includes_new/specials/SpecialCategories.php	2014-10-16 19:21:26.837309403 +0200
-@@ -121,6 +121,12 @@
+@@ -121,6 +121,13 @@
  
  	function formatRow( $result ) {
  		$title = Title::makeTitle( NS_CATEGORY, $result->cat_title );
 +		/*op-patch|TS|2009-06-19|HaloACL|SafeTitle|start*/
 +		// See http://dmwiki.ontoprise.com:8888/dmwiki/index.php/SafeTitle
-+		if (!$title->userCanReadEx()) {
++		$title_nftv = Title::newFromTitleValue($title);
++		if (!$title_nftv->userCanReadEx()) {
 +			return "";
 +		}
 +		/*op-patch|TS|2009-06-19|end*/		
