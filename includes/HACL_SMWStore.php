@@ -643,4 +643,16 @@ class HACLSMWStore extends SMWStore {
     public function doDataUpdate(SMWSemanticData $data) {
         parent::doDataUpdate($data);
     }
+	
+	/**
+	 * Return status of the concept cache for the given concept 
+	 * @see Store::getConceptCacheStatus()
+	 *
+	 * @param Title|SMWWikiPageValue $concept
+	 *
+	 * @return DIConcept|null
+	 */
+	public function getConceptCacheStatus($concept) {
+		return $this->mWrappedStore->getConceptCacheStatus($concept);
+	}
 }
