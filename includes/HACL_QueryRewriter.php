@@ -179,10 +179,7 @@ class  HACLQueryRewriter  {
 			$prop = $descr->getProperty();
 			$wpv = $prop->getDiWikiPage();
 			if ($wpv) {
-				$id = $wpv->getTitle()->getArticleID();
-				global $wgUser;
-				$allowed = HACLEvaluator::hasPropertyRight($id, 
-				                             $wgUser->getId(), HACLRight::READ);
+				$allowed = $this->isAllowedToAccess($wpv);
 				if ($allowed) {
 					// Access to property is allowed => check for further
 					// subqueries of the property
@@ -233,10 +230,8 @@ class  HACLQueryRewriter  {
 				$prop = $pr->getData();
 				$wpv = $prop->getWikiPageValue();
 				if ($wpv) {
-					$id = $wpv->getTitle()->getArticleID();
 					global $wgUser;
-					$allowed = HACLEvaluator::hasPropertyRight($id, 
-					                                   $wgUser->getId(), HACLRight::READ);
+					$allowed = $this->isAllowedToAccess($wpv);
 					if (!$allowed) {			
 						// Invalid print request => remove it   
 						unset($printRequests[$key]);    
@@ -857,6 +852,27 @@ class  HACLQueryRewriter  {
 		
 		return $s;
 	}
-	
-	
+
+	/**
+	 *
+	 * Check if HACL allows access (defined by $rights) to a WikiPage
+	 * @param WikiPage  $wpv
+	 *                  The SMWDIWikiPage-object which wants to be accessed
+	 * @param HACLRight $right 
+	 *                  A HACLRight-constant. Optional. Defaults to HACLRight::READ
+	 * @return boolean 
+	 */
+	private function isAllowedToAccess($wpv, $right = HACLRight::READ) {
+		$t = $wpv->getTitle();
+		if (!is_null($t)) {
+			$id = $t->getArticleID();
+			global $wgUser;
+			$allowed = HACLEvaluator::hasPropertyRight($id, $wgUser->getId(), $right);
+		}
+		else {
+			// TODO: or better true?
+			$allowed = false;
+		}
+		return $allowed;
+	}
 }

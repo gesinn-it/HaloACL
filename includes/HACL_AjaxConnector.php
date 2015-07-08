@@ -4055,7 +4055,7 @@ function readGroupDefinition($groupName) {
     $temp = null;
     $temp = $group->getManageUsers();
     foreach ($temp as $userID) {
-        $db =& wfGetDB( DB_SLAVE );
+        $db = wfGetDB( DB_SLAVE );
         $gt = $db->tableName('user');
         $sql = "SELECT * FROM $gt where user_id = ".$userID;
         $res = $db->query($sql);
@@ -4235,7 +4235,7 @@ function haclGetUsersForUserTable($selectedGroup,$sort,$dir,$startIndex,$results
 
     if ($selectedGroup == 'all' || $selectedGroup == '') {
 
-        $db =& wfGetDB( DB_SLAVE );
+        $db = wfGetDB( DB_SLAVE );
         $gt = $db->tableName('user');
         $sql = "SELECT * FROM $gt order by user_name";
 
@@ -5281,7 +5281,7 @@ function haclGetGroupDetails($groupname) {
     	'hasDynamicMembers' => $g->hasDynamicMembers()
     );
     foreach ($g->getManageUsers() as $id) {
-        $db =& wfGetDB( DB_SLAVE );
+        $db = wfGetDB( DB_SLAVE );
         $gt = $db->tableName('user');
         $sql = "SELECT * FROM $gt ";
         $sql .= "WHERE user_id = ".$id;
