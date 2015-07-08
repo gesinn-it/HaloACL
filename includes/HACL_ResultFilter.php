@@ -113,7 +113,8 @@ class  HACLResultFilter  {
 			}
 		}
 		if ($valuesRemoved) {
-			// Some subject were removed => create a new query result.
+			// Some result values were removed => reindex result-array and create a new query result.
+			$results = array_values($results);
 			$qr = $qr->newFromQueryResult($results);
 			$qr->addErrors(array(wfMsgForContent('hacl_sp_results_removed')));
 		}
