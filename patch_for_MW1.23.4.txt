@@ -627,3 +627,16 @@
  
  	/**
  	 * Should links to this title be shown as potentially viewable (i.e. as
+--- includes/CategoryViewer.php.orig	2014-10-29 18:57:21.000000000 +0100
++++ includes/CategoryViewer.php	2015-07-24 15:17:31.879729942 +0200
+@@ -324,6 +324,10 @@
+ 			$count = 0;
+ 			foreach ( $res as $row ) {
+ 				$title = Title::newFromRow( $row );
++				if (!$title->userCanReadEx()) {
++					// HaloACL: do not show titles of unreadable pages
++					continue;
++				}
+ 				if ( $row->cl_collation === '' ) {
+ 					// Hack to make sure that while updating from 1.16 schema
+ 					// and db is inconsistent, that the sky doesn't fall.

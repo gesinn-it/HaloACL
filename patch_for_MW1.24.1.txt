@@ -626,3 +626,16 @@
 +
 +
  }
+--- includes/CategoryViewer.php.orig	2015-07-24 15:31:32.000000000 +0200
++++ includes/CategoryViewer.php	2015-07-24 15:32:02.000000000 +0200
+@@ -336,6 +336,10 @@
+ 			$count = 0;
+ 			foreach ( $res as $row ) {
+ 				$title = Title::newFromRow( $row );
++				if (!$title->userCanReadEx()) {
++					// HaloACL: do not show titles of unreadable pages
++					continue;
++				}
+ 				if ( $row->cl_collation === '' ) {
+ 					// Hack to make sure that while updating from 1.16 schema
+ 					// and db is inconsistent, that the sky doesn't fall.

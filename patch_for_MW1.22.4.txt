@@ -740,3 +740,16 @@ diff -u -r -N includes/Title.php includes_new/Title.php
  	/**
  	 * Should links to this title be shown as potentially viewable (i.e. as
  	 * "bluelinks"), even if there's no record by this title in the page
+--- includes/CategoryViewer.php.orig	2014-04-24 23:24:36.000000000 +0200
++++ includes/CategoryViewer.php	2015-07-24 15:24:11.622529000 +0200
+@@ -331,6 +331,10 @@
+ 			$count = 0;
+ 			foreach ( $res as $row ) {
+ 				$title = Title::newFromRow( $row );
++				if (!$title->userCanReadEx()) {
++					// HaloACL: do not show titles of unreadable pages
++					continue;
++				}
+ 				if ( $row->cl_collation === '' ) {
+ 					// Hack to make sure that while updating from 1.16 schema
+ 					// and db is inconsistent, that the sky doesn't fall.
